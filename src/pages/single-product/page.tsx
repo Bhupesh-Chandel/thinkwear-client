@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Star, Heart, Share2, Minus, Plus, ShoppingCart } from "lucide-react";
 import { useParams } from "react-router";
 
-import { useCart } from "@/components/cart-provider";
+// import { useCart } from "@/components/cart-provider";
 import { useQuery } from "@tanstack/react-query";
 import { getSingleProduct } from "@/http/api";
 import type { Product } from "@/types";
@@ -221,7 +221,7 @@ export default function ProductPage() {
                     {priceConfiguration.name}
                   </label>
                   <div className="flex gap-2">
-                    {Object.keys(priceConfiguration.variants).map((color) => (
+                    {Object.keys(priceConfiguration.variants).map((color:any) => (
                       <Button
                         key={color}
                         variant={
@@ -229,7 +229,7 @@ export default function ProductPage() {
                         }
                         size="sm"
                         onClick={() => {
-                            setPrice(priceConfiguration.variants[color])
+                            setPrice(priceConfiguration.variants[color] as any)
                             setSelectedColor(color)
                         }}
                         className={

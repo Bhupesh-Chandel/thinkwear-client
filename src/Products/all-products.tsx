@@ -35,7 +35,11 @@ import { ProductCard } from "@/components/product-card";
 import { Pagination } from "@/components/pagination";
 import { useCart } from "@/components/cart-provider";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getCategories, getProducts } from "@/http/api";
+import { 
+  
+  // getCategories, 
+  
+  getProducts } from "@/http/api";
 
 const allProducts = [
   {
@@ -152,23 +156,24 @@ export default function ProductsPage() {
   const { addItem } = useCart();
 
 
-    const { data: categoriesData } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => {
-      return getCategories("");
-    },
-  });
+  // const { data: categoriesData } = useQuery({
+  //   queryKey: ["categories"],
+  //   queryFn: () => {
+  //     return getCategories("");
+  //   },
+  // });
 
 
   const [queryParams, setQueryParams] = useState({
     perPage: 30,
     currentPage: 1,
-    categoryId:"686011195c182fd4d672001f"
+    categoryId: "686011195c182fd4d672001f",
+    q:""
   });
 
   const debouncedQUpdate = useMemo(() => {
     return debounce((value: string | undefined) => {
-      setQueryParams((prev) => ({ ...prev, q: value, currentPage: 1 }));
+      setQueryParams((prev) => ({ ...prev, q: value as string, currentPage: 1 }));
     }, 500);
   }, []);
 
@@ -261,7 +266,7 @@ export default function ProductsPage() {
       <div>
         <Label>Categories</Label>
         <div className="space-y-2 mt-2">
-          {categories?.map((category:any) => (
+          {categories?.map((category: any) => (
             <div key={category} className="flex items-center space-x-2">
               <Checkbox
                 id={category}
@@ -362,20 +367,20 @@ export default function ProductsPage() {
               {(selectedCategories.length > 0 ||
                 selectedPriceRange !== "All Prices" ||
                 searchTerm) && (
-                <div className="flex gap-2 flex-wrap">
-                  {selectedCategories.map((category) => (
-                    <Badge key={category} variant="secondary">
-                      {category}
-                    </Badge>
-                  ))}
-                  {selectedPriceRange !== "All Prices" && (
-                    <Badge variant="secondary">{selectedPriceRange}</Badge>
-                  )}
-                  {searchTerm && (
-                    <Badge variant="secondary">"{searchTerm}"</Badge>
-                  )}
-                </div>
-              )}
+                  <div className="flex gap-2 flex-wrap">
+                    {selectedCategories.map((category) => (
+                      <Badge key={category} variant="secondary">
+                        {category}
+                      </Badge>
+                    ))}
+                    {selectedPriceRange !== "All Prices" && (
+                      <Badge variant="secondary">{selectedPriceRange}</Badge>
+                    )}
+                    {searchTerm && (
+                      <Badge variant="secondary">"{searchTerm}"</Badge>
+                    )}
+                  </div>
+                )}
             </div>
 
             <div className="flex items-center gap-4 flex-wrap">
@@ -418,11 +423,10 @@ export default function ProductsPage() {
                   variant={gridCols === 3 ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setGridCols(3)}
-                  className={`rounded-r-none ${
-                    gridCols === 3
+                  className={`rounded-r-none ${gridCols === 3
                       ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
                       : ""
-                  }`}
+                    }`}
                 >
                   <Grid3X3 className="h-4 w-4" />
                 </Button>
@@ -430,11 +434,10 @@ export default function ProductsPage() {
                   variant={gridCols === 4 ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setGridCols(4)}
-                  className={`rounded-l-none ${
-                    gridCols === 4
+                  className={`rounded-l-none ${gridCols === 4
                       ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
                       : ""
-                  }`}
+                    }`}
                 >
                   <Grid2X2 className="h-4 w-4" />
                 </Button>
@@ -452,11 +455,10 @@ export default function ProductsPage() {
           ) : (
             <>
               <div
-                className={`grid gap-6 ${
-                  gridCols === 3
+                className={`grid gap-6 ${gridCols === 3
                     ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                     : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                }`}
+                  }`}
               >
                 {!isLoading &&
                   products.data.map((product: any, index: number) => (

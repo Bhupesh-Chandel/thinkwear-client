@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Minus, Plus, X } from "lucide-react"
 import { useCart } from "@/components/cart-provider"
-import Image from "next/image"
-
 export function CartDrawer() {
   const { items, isOpen, toggleCart, updateQuantity, removeItem, total } = useCart()
 
@@ -28,7 +26,7 @@ export function CartDrawer() {
                 <div className="space-y-4">
                   {items.map((item) => (
                     <div key={item.id} className="flex items-center space-x-4 p-4 border rounded-lg">
-                      <Image
+                      <img
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
                         width={60}

@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { Link } from "react-router"
+
 
 const carouselItems = [
   {
@@ -65,7 +65,7 @@ export function ProductCarousel() {
           }`}
         >
           <div className="relative h-full">
-            <Image src={item.image || "/placeholder.svg"} alt={item.title} fill className="object-cover" />
+            <img src={item.image || "/placeholder.svg"} alt={item.title}  className="object-cover" />
             <div className="absolute inset-0 bg-black/40" />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center text-white space-y-4 max-w-2xl px-4">
@@ -77,7 +77,7 @@ export function ProductCarousel() {
                   className="mt-6 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
                   asChild
                 >
-                  <Link href={item.href}>{item.cta}</Link>
+                  <Link to={item.href}>{item.cta}</Link>
                 </Button>
               </div>
             </div>
