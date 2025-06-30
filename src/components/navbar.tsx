@@ -1,6 +1,7 @@
 import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
+import { ModeToggle } from "./mode-toggle";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,7 +20,7 @@ const Navbar = () => {
               to="/"
               className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hover:scale-105 transition-transform duration-200"
             >
-              ShopWear
+              ThinkWear
             </Link>
           </div>
 
@@ -90,6 +91,9 @@ const Navbar = () => {
                 </span>
               )}
             </button>
+
+              <ModeToggle/>
+
 
             {/* Mobile menu button */}
             <button

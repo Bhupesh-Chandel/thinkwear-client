@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-              ShopWear
+              ThinkWear
             </h3>
             <p className="text-gray-300 mb-6 max-w-md">
               Discover the latest trends and timeless classics in our curated
