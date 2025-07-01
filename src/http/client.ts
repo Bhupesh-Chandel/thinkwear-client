@@ -14,6 +14,7 @@ export const refreshToken = async () => {
   localStorage.setItem("accessToken", res.data.accessToken);
 };
 
+// backend_api
 export const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_API_URL,
   withCredentials: true,
@@ -36,6 +37,7 @@ api.interceptors.request.use(
   }
 );
 
+// catalog api instance 
 export const catalogApiInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_API_URL_CATALOG,
   withCredentials: true,
@@ -58,6 +60,7 @@ catalogApiInstance.interceptors.request.use(
   }
 );
 
+//useless
 export const orderApiInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_API_URL_ORDER,
   withCredentials: true,
@@ -67,6 +70,7 @@ export const orderApiInstance = axios.create({
   },
 });
 
+//useless
 orderApiInstance.interceptors.request.use(
   (request) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -79,6 +83,7 @@ orderApiInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 api.interceptors.response.use(
   (response) => response,
@@ -122,6 +127,7 @@ catalogApiInstance.interceptors.response.use(
   }
 );
 
+//useless
 orderApiInstance.interceptors.response.use(
   (response) => response,
   async (error) => {

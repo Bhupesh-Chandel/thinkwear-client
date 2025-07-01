@@ -37,7 +37,7 @@ import { useCart } from "@/components/cart-provider";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { 
   
-  // getCategories, 
+  //  getCategories, 
   
   getProducts } from "@/http/api";
 
@@ -167,7 +167,7 @@ export default function ProductsPage() {
   const [queryParams, setQueryParams] = useState({
     perPage: 30,
     currentPage: 1,
-    categoryId: "686011195c182fd4d672001f",
+    categoryId: "686011195c182fd4d672001f,686212d8384f751638fa70e0,68621293384f751638fa70da,686011f75c182fd4d6720026",
     q:""
   });
 

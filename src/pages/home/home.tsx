@@ -6,14 +6,16 @@ import MultiSection from "./MultiSection/multiSection";
 function Home() {
   return (
     <>
-    <Hero/>
-    {/* sdbjsdb */}
+      <div className="overflow-x-hidden">
+        <Hero />
+        {/* sdbjsdb */}
 
-    <ProductShowcase/>
+        <ProductShowcase />
 
-    <MultiSection/>
+        <MultiSection />
 
-    <NewsLetter/>
+        <NewsLetter />
+      </div>
     </>
   )
 }

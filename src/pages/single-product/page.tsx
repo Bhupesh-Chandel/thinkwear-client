@@ -10,6 +10,7 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getSingleProduct } from "@/http/api";
 import type { Product } from "@/types";
+import { Spinner } from "@/components/ui/spinner";
 
 // const product = {
 //   id: "1",
@@ -120,7 +121,11 @@ export default function ProductPage() {
   });
 
   if (isLoading) {
-    return <></>;
+    return <>
+    <div className="flex justify-center items-center min-h-[50vh]">
+      <Spinner className="h-10 w-10 text-black dark:text-white" />
+    </div>
+    </>;
   }
 
   const defaultConfiguration = Object.entries(

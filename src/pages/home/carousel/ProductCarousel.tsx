@@ -23,12 +23,15 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({
     showNavigation
   } = useResponsiveCarousel(products.length);
 
+ 
+
   // Calculate the percentage to move each item
   const itemWidth = 100 / config.itemsPerView;
   const translateX = -(currentIndex * itemWidth);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      <>
+       <div className="w-full max-w-7xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8 relative ">
          <div className='flex flex-col gap-2 mx-auto'>
@@ -83,7 +86,9 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({
                 width: `${itemWidth}%`
               }}
             >
-              <ProductCard product={product} />
+              <a href={`products/${product._id}`}>
+              <ProductCard key={product._id}  product={product} />
+              </a>
             </div>
           ))}
         </div>
@@ -120,5 +125,6 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({
         </div>
       )}
     </div>
+      </>
   );
 };
