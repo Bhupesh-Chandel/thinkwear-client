@@ -88,7 +88,7 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({
               }}
             >
               <Link to={`products/${product._id}`}>
-              <ProductCard key={product._id}  product={product} />
+              <ProductCard product={product} />
               </Link>
             </div>
           ))}

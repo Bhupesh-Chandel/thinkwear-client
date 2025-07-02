@@ -133,8 +133,8 @@ function MultiSection() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {latestProducts.map((product: any) => (
-               <Link to={`/products/${product._id}`}>
-              <ProductCard key={product._id} product={product} />
+               <Link  key={product._id} to={`/products/${product._id}` }>
+              <ProductCard product={product} />
               </Link>
             ))}
           </div>
@@ -157,9 +157,9 @@ function MultiSection() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {topSellers.map((product: any) => (
-              <a href={`/products/${product._id}`}>
-                <ProductCard key={product._id} product={product} />
-              </a>
+              <Link key={product._id} to={`/products/${product._id}`}>
+                <ProductCard  product={product} />
+              </Link>
             ))}
           </div>
         )}

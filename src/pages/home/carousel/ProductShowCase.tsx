@@ -25,7 +25,7 @@ function ProductShowcase() {
     <div>
           <main className="py-8">
         {/* <a href={`/products/${FeaturedProducts._id}`}> */}
-          <ProductCarousel products={featuredProducts} title="Featured Products" />
+          <ProductCarousel products={featuredProducts} title="Featured Products"  />
         {/* </a> */}
       </main>
     </div>

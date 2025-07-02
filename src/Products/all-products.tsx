@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import {useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { debounce } from "lodash";
@@ -50,6 +50,7 @@ export default function ProductsPage() {
   const [, setCurrentPage] = useState(1);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const { addToCart } = useCart();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [queryParams, setQueryParams] = useState<{
     perPage: number;
@@ -68,12 +69,19 @@ export default function ProductsPage() {
   const debouncedQUpdate = useMemo(() => {
     return debounce((value: string | undefined) => {
       setQueryParams((prev) => ({ ...prev, q: value as string, currentPage: 1 }));
-    }, 500);
+    }, 1000);
   }, []);
 
-  useEffect(() => {
-    return () => debouncedQUpdate.cancel();
-  }, [debouncedQUpdate]);
+
+
+  // useLayoutEffect(() => {
+  //   // console.log("ref working" , ref.current);
+  //      if(inputRef.current){
+  //      inputRef.current?.focus();
+
+  //      }
+  // }, [queryParams.q]);
+
 
   const { data: categoriesData } = useQuery({
     queryKey: ["categories"],
@@ -138,76 +146,9 @@ export default function ProductsPage() {
     setQueryParams((prev) => ({ ...prev, categoryId: "", q: "", currentPage: 1 }));
   };
 
-  const FiltersContent = () => (
-    <div className="space-y-6">
-      <div>
-        <Label htmlFor="search">Search</Label>
-        <div className="relative mt-2">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            id="search"
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={(e) => {
-              const value = e.target.value;
-              setSearchTerm(value);
-              debouncedQUpdate(value);
-            }}
-            className="pl-10"
-          />
-        </div>
-      </div>
-
-      <div>
-        <Label>Categories</Label>
-        <div className="space-y-2 mt-2">
-          {categoriesData && categoriesData.length > 0 ? (
-            categoriesData.map((category: any) => (
-              <div key={category._id} className="flex items-center space-x-2">
-                <Checkbox
-                  id={category._id}
-                  checked={selectedCategoryIds.includes(category._id)}
-                  onCheckedChange={(checked) =>
-                    handleCategoryChange(category._id, category.name, checked as boolean)
-                  }
-                />
-                <Label htmlFor={category._id} className="text-sm font-normal">
-                  {category.name}
-                </Label>
-              </div>
-            ))
-          ) : (
-            <p className="text-sm text-muted-foreground">Loading categories...</p>
-          )}
-        </div>
-      </div>
-
-      {/* <div>
-        <Label>Price Range</Label>
-        <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
-          <SelectTrigger className="mt-2">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All Prices">All Prices</SelectItem>
-            {priceRanges.map((range) => (
-              <SelectItem key={range.label} value={range.label}>
-                {range.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div> */}
-
-      <Button
-        variant="outline"
-        className="w-full bg-transparent"
-        onClick={clearFilters}
-      >
-        Clear Filters
-      </Button>
-    </div>
-  );
+  // const FiltersContent = () => (
+    
+  // );
 
   const { data: products, isLoading } = useQuery({
     queryKey: ["products", queryParams],
@@ -304,7 +245,77 @@ export default function ProductsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <FiltersContent />
+              {/* <FiltersContent /> */}
+              <div className="space-y-6">
+      <div>
+        <Label htmlFor="search">Search</Label>
+        <div className="relative mt-2">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Input
+          ref={inputRef}
+            id="search"
+            placeholder="Search products..."
+            // value={searchTerm}
+            defaultValue={queryParams.q}
+            onChange={(e) => {
+              const value = e.target.value;
+              // setSearchTerm(value);
+              debouncedQUpdate(value);
+            }}
+            className="pl-10"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label>Categories</Label>
+        <div className="space-y-2 mt-2">
+          {categoriesData && categoriesData.length > 0 ? (
+            categoriesData.map((category: any) => (
+              <div key={category._id} className="flex items-center space-x-2">
+                <Checkbox
+                  id={category._id}
+                  checked={selectedCategoryIds.includes(category._id)}
+                  onCheckedChange={(checked) =>
+                    handleCategoryChange(category._id, category.name, checked as boolean)
+                  }
+                />
+                <Label htmlFor={category._id} className="text-sm font-normal">
+                  {category.name}
+                </Label>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">Loading categories...</p>
+          )}
+        </div>
+      </div>
+
+      {/* <div>
+        <Label>Price Range</Label>
+        <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+          <SelectTrigger className="mt-2">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="All Prices">All Prices</SelectItem>
+            {priceRanges.map((range) => (
+              <SelectItem key={range.label} value={range.label}>
+                {range.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div> */}
+
+      <Button
+        variant="outline"
+        className="w-full bg-transparent"
+        onClick={clearFilters}
+      >
+        Clear Filters
+      </Button>
+    </div>
             </CardContent>
           </Card>
         </div>
@@ -350,7 +361,77 @@ export default function ProductsPage() {
                   <DialogHeader>
                     <DialogTitle>Filters</DialogTitle>
                   </DialogHeader>
-                  <FiltersContent />
+                  {/* <FiltersContent /> */}
+                  <div className="space-y-6">
+      <div>
+        <Label htmlFor="search">Search</Label>
+        <div className="relative mt-2">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Input
+          ref={inputRef}
+            id="search"
+            placeholder="Search products..."
+            // value={searchTerm}
+            defaultValue={queryParams.q}
+            onChange={(e) => {
+              const value = e.target.value;
+              // setSearchTerm(value);
+              debouncedQUpdate(value);
+            }}
+            className="pl-10"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label>Categories</Label>
+        <div className="space-y-2 mt-2">
+          {categoriesData && categoriesData.length > 0 ? (
+            categoriesData.map((category: any) => (
+              <div key={category._id} className="flex items-center space-x-2">
+                <Checkbox
+                  id={category._id}
+                  checked={selectedCategoryIds.includes(category._id)}
+                  onCheckedChange={(checked) =>
+                    handleCategoryChange(category._id, category.name, checked as boolean)
+                  }
+                />
+                <Label htmlFor={category._id} className="text-sm font-normal">
+                  {category.name}
+                </Label>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">Loading categories...</p>
+          )}
+        </div>
+      </div>
+
+      {/* <div>
+        <Label>Price Range</Label>
+        <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+          <SelectTrigger className="mt-2">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="All Prices">All Prices</SelectItem>
+            {priceRanges.map((range) => (
+              <SelectItem key={range.label} value={range.label}>
+                {range.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div> */}
+
+      <Button
+        variant="outline"
+        className="w-full bg-transparent"
+        onClick={clearFilters}
+      >
+        Clear Filters
+      </Button>
+    </div>
                 </DialogContent>
               </Dialog>
 

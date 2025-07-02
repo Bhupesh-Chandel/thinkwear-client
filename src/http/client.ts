@@ -2,6 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "@/store";
 
 export const refreshToken = async () => {
+  console.log("API URL:", import.meta.env.VITE_BACKEND_API_URL);
   const res = await axios.post(
     `${import.meta.env.VITE_BACKEND_API_URL}/auth/refresh`,
     {},
