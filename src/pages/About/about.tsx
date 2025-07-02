@@ -1,5 +1,6 @@
 import { Award,Heart, Truck, Shield, Headphones } from 'lucide-react';
-
+import { Link } from 'react-router';
+import Profile from "../../Profile.jpeg";
 const About = () => {
   const stats = [
     { number: '10K+', label: 'Happy Customers' },
@@ -33,19 +34,19 @@ const About = () => {
 
   const team = [
     {
-      name: 'Sarah Johnson',
+      name: 'Bhupesh',
       role: 'Founder & CEO',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop',
-      description: 'Fashion entrepreneur with 15 years of industry experience.'
+      image: Profile,
+      description: 'Programmer and entrepreneur with 15 years of industry experience.'
     },
     {
-      name: 'Michael Chen',
+      name: 'Raman',
       role: 'Creative Director',
       image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
       description: 'Award-winning designer passionate about sustainable fashion.'
     },
     {
-      name: 'Emily Rodriguez',
+      name: 'Khushi',
       role: 'Head of Marketing',
       image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
       description: 'Digital marketing expert with a love for brand storytelling.'
@@ -59,7 +60,7 @@ const About = () => {
       <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-            About ShopVibe
+            About ThinkWear
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
             We're passionate about bringing you the latest fashion trends with exceptional quality and unmatched style.
@@ -68,20 +69,20 @@ const About = () => {
       </div>
 
       {/* Our Story */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 dark:bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in">
-              <h2 className="text-4xl font-bold text-gray-800 mb-6">
+              <h2 className="text-4xl font-bold text-gray-800 mb-6  dark:text-white">
                 Our Story
               </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Founded in 2019, ShopVibe began as a small boutique in the heart of New York City. Our founder, Sarah Johnson, had a vision to make high-quality, fashionable clothing accessible to everyone, regardless of their budget or location.
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed dark:text-white">
+                Founded in 2024, ThinkWear began as a small boutique in the heart of Dehradun. Our founder, Bhupesh, had a vision to make high-quality, fashionable clothing accessible to everyone, regardless of their budget or location.
               </p>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed  dark:text-white">
                 What started as a passion project has grown into a global brand, serving customers in over 50 countries. We believe that fashion is a form of self-expression, and everyone deserves to feel confident and stylish in what they wear.
               </p>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-lg text-gray-600 leading-relaxed  dark:text-white">
                 Today, we continue to curate collections that blend timeless elegance with contemporary trends, always maintaining our commitment to quality, sustainability, and exceptional customer service.
               </p>
             </div>
@@ -97,7 +98,7 @@ const About = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -109,7 +110,7 @@ const About = () => {
                 <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 font-medium">
+                <div className="text-gray-600 font-medium dark:text-white">
                   {stat.label}
                 </div>
               </div>
@@ -119,10 +120,10 @@ const About = () => {
       </section>
 
       {/* Mission & Values */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4  dark:bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6 animate-fade-in">
+            <h2 className="text-4xl font-bold text-gray-800 mb-6 animate-fade-in dark:text-white">
               Our Mission & Values
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-pink-600 mx-auto rounded-full animate-scale-in"></div>
@@ -132,16 +133,16 @@ const About = () => {
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className="text-center bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 animate-fade-in"
+                className="text-center bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 animate-fade-in dark:bg-[#121212]"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl mb-6">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4 dark:text-white">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed dark:text-white">
                   {feature.description}
                 </p>
               </div>
@@ -151,14 +152,14 @@ const About = () => {
       </section>
 
       {/* Team */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-20 px-4 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6 animate-fade-in">
+            <h2 className="text-4xl font-bold text-gray-800 mb-6 animate-fade-in dark:text-white">
               Meet Our Team
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              The passionate individuals behind ShopVibe, dedicated to bringing you the best in fashion and customer experience.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in dark:text-white" style={{ animationDelay: '0.2s' }}>
+              The passionate individuals behind ThinkWear, dedicated to bringing you the best in fashion and customer experience.
             </p>
           </div>
 
@@ -177,13 +178,13 @@ const About = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-purple-600/20 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                <h3 className="text-2xl font-bold text-gray-800 mb-2 dark:text-white">
                   {member.name}
                 </h3>
                 <p className="text-purple-600 font-semibold mb-4">
                   {member.role}
                 </p>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed  dark:text-white">
                   {member.description}
                 </p>
               </div>
@@ -197,15 +198,17 @@ const About = () => {
         <div className="max-w-4xl mx-auto text-center px-4">
           <Heart className="w-16 h-16 mx-auto mb-6 animate-bounce" />
           <h2 className="text-4xl font-bold mb-6">
-            Join the ShopVibe Family
+            Join the ThinkWear Family
           </h2>
           <p className="text-xl mb-8 opacity-90">
             Experience the difference that passion, quality, and dedication make. 
             Start your style journey with us today.
           </p>
-          <button className="bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
-            Shop Now
-          </button>
+           <Link to={"/products"}>
+               <button className="bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
+              Shop Now
+              </button>
+           </Link>
         </div>
       </section>
 

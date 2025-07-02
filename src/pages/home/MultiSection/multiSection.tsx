@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import ProductCard from "./productCard";
 // import axios from "axios";
 import { getProducts } from "@/http/api";
+import { Link } from "react-router";
 
 function MultiSection() {
 
@@ -117,9 +118,9 @@ function MultiSection() {
 
 
       {/* Latest Products Section */}
-      <section className="py-16 px-4 max-w-7xl mx-auto bg-white rounded-3xl shadow-sm mt-0">
+      <section className="py-16 px-4 max-w-7xl mx-auto  rounded-3xl shadow-sm mt-0">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">
+          <h2 className="text-4xl font-bold  mb-4">
             Latest Products
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-pink-600 mx-auto rounded-full"></div>
@@ -132,9 +133,9 @@ function MultiSection() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {latestProducts.map((product: any) => (
-               <a href={`/products/${product._id}`}>
+               <Link to={`/products/${product._id}`}>
               <ProductCard key={product._id} product={product} />
-              </a>
+              </Link>
             ))}
           </div>
         )}

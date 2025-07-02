@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, User, ArrowRight } from 'lucide-react';
-// import Navbar from '../components/Navbar';
-// import Footer from '../components/Footer';
 
 const Contact = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,13 +21,11 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
     console.log('Form submitted:', formData);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
@@ -45,42 +41,41 @@ const Contact = () => {
       {/* Login/Signup Form */}
       <section className="py-20 px-4">
         <div className="max-w-md mx-auto">
-          <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-scale-in">
-            {/* Form Header */}
+          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden animate-scale-in">
             <div className="p-8 pb-6">
               <div className="text-center mb-8">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl mb-4">
                   <User className="w-8 h-8" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                   {isLogin ? 'Sign In' : 'Create Account'}
                 </h2>
-                <p className="text-gray-600 mt-2">
+                <p className="text-gray-600 dark:text-gray-400 mt-2">
                   {isLogin ? 'Welcome back! Please sign in to your account.' : 'Join us and start your style journey today.'}
                 </p>
               </div>
 
-              {/* Social Login Buttons */}
+              {/* Social Buttons */}
               <div className="space-y-3 mb-6">
-                <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors duration-200">
+                <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                   <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" className="w-5 h-5" />
-                  <span className="font-medium text-gray-700">Continue with Google</span>
+                  <span className="font-medium text-gray-700 dark:text-gray-200">Continue with Google</span>
                 </button>
-                <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors duration-200">
+                <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
                   <div className="w-5 h-5 bg-blue-600 rounded flex items-center justify-center">
                     <span className="text-white text-xs font-bold">f</span>
                   </div>
-                  <span className="font-medium text-gray-700">Continue with Facebook</span>
+                  <span className="font-medium text-gray-700 dark:text-gray-200">Continue with Facebook</span>
                 </button>
               </div>
 
               {/* Divider */}
               <div className="relative mb-6">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
+                  <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white text-gray-500">or</span>
+                  <span className="px-4 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">or</span>
                 </div>
               </div>
 
@@ -89,7 +84,7 @@ const Contact = () => {
                 {!isLogin && (
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         First Name
                       </label>
                       <input
@@ -97,13 +92,13 @@ const Contact = () => {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                         placeholder="John"
                         required={!isLogin}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Last Name
                       </label>
                       <input
@@ -111,7 +106,7 @@ const Contact = () => {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                         placeholder="Doe"
                         required={!isLogin}
                       />
@@ -120,17 +115,17 @@ const Contact = () => {
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                       placeholder="your@email.com"
                       required
                     />
@@ -138,24 +133,24 @@ const Contact = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                      className="w-full pl-12 pr-12 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                       placeholder="••••••••"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -164,17 +159,17 @@ const Contact = () => {
 
                 {!isLogin && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Confirm Password
                     </label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       <input
                         type={showPassword ? 'text' : 'password'}
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleInputChange}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                        className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                         placeholder="••••••••"
                         required={!isLogin}
                       />
@@ -185,10 +180,10 @@ const Contact = () => {
                 {isLogin && (
                   <div className="flex items-center justify-between">
                     <label className="flex items-center">
-                      <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500" />
-                      <span className="ml-2 text-sm text-gray-700">Remember me</span>
+                      <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 dark:bg-gray-800 dark:border-gray-600" />
+                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">Remember me</span>
                     </label>
-                    <a href="#" className="text-sm text-purple-600 hover:text-purple-700 transition-colors duration-200">
+                    <a href="#" className="text-sm text-purple-600 hover:text-purple-700 dark:hover:text-purple-400 transition-colors duration-200">
                       Forgot password?
                     </a>
                   </div>
@@ -205,12 +200,12 @@ const Contact = () => {
 
               {/* Footer */}
               <div className="mt-6 text-center">
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-400">
                   {isLogin ? "Don't have an account?" : "Already have an account?"}
                   <button
                     type="button"
                     onClick={() => setIsLogin(!isLogin)}
-                    className="ml-1 text-purple-600 hover:text-purple-700 font-semibold transition-colors duration-200"
+                    className="ml-1 text-purple-600 hover:text-purple-700 dark:hover:text-purple-400 font-semibold transition-colors duration-200"
                   >
                     {isLogin ? 'Sign up' : 'Sign in'}
                   </button>
@@ -220,16 +215,15 @@ const Contact = () => {
           </div>
 
           {/* Additional Info */}
-          <div className="mt-8 text-center text-sm text-gray-500">
+          <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
             <p>
               By {isLogin ? 'signing in' : 'creating an account'}, you agree to our{' '}
-              <a href="#" className="text-purple-600 hover:text-purple-700">Terms of Service</a> and{' '}
-              <a href="#" className="text-purple-600 hover:text-purple-700">Privacy Policy</a>
+              <a href="#" className="text-purple-600 hover:text-purple-700 dark:hover:text-purple-400">Terms of Service</a> and{' '}
+              <a href="#" className="text-purple-600 hover:text-purple-700 dark:hover:text-purple-400">Privacy Policy</a>
             </p>
           </div>
         </div>
       </section>
-
     </div>
   );
 };

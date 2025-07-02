@@ -108,7 +108,7 @@ export function ProductCarousel() {
         {carouselItems.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full transition-colors ${index === currentSlide ? "bg-white" : "bg-white/50"}`}
+            className={`w-3 h-3 rounded-full transition-colors ${index === currentSlide ? "bg-white" : "bg-white/50"} dark:bg-black`}
             onClick={() => setCurrentSlide(index)}
           />
         ))}

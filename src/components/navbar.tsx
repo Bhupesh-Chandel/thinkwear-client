@@ -2,13 +2,23 @@ import { Search, User, ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router";
 import { ModeToggle } from "./mode-toggle";
+import "../custom-media.css"
+import { useCartDrawer } from "../Context/CartDrawerContext";
+import { useCart } from "../Context/cartContext"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartCount] = useState(3); // Mock cart count
+  // const [cartCount] = useState(3); // Mock cart count
   const location = useLocation();
+  const { setOpen } = useCartDrawer();
+  const { cartItems } = useCart();
+const totalQuantity = cartItems.reduce((sum, item) => {
+  if (!item || typeof item.quantity !== "number") return sum + 1;
+  return sum + item.quantity;
+}, 0);
 
-  const isActive = (path:string) => location.pathname === path;
+  const isActive = (path: string) => location.pathname === path;
+
 
   return (
     <nav className="backdrop-blur-md border-b  sticky top-0 z-50 transition-all duration-300">
@@ -25,42 +35,38 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8 mid:ml-8">
+          <div className="hidden md:flex items-center space-x-8 mid-ml-8">
             <Link
               to="/"
-              className={`hover:text-purple-600 transition-colors duration-200  ${
-                isActive("/") ? "text-purple-600 font-medium" : ""
-              }`}
+              className={`hover:text-purple-600 transition-colors duration-200  ${isActive("/") ? "text-purple-600 font-medium" : ""
+                }`}
             >
               Home
             </Link>
             <Link
               to="/products"
-              className={`hover:text-purple-600 transition-colors duration-200 ${
-                isActive("/products")
+              className={`hover:text-purple-600 transition-colors duration-200 ${isActive("/products")
                   ? "text-purple-600 font-medium"
                   : ""
-              }`}
+                }`}
             >
               Products
             </Link>
             <Link
               to="/about"
-              className={`hover:text-purple-600 transition-colors duration-200 ${
-                isActive("/about")
+              className={`hover:text-purple-600 transition-colors duration-200 ${isActive("/about")
                   ? "text-purple-600 font-medium"
                   : ""
-              }`}
+                }`}
             >
               About
             </Link>
             <Link
               to="/contact"
-              className={`hover:text-purple-600 transition-colors duration-200 ${
-                isActive("/contact")
+              className={`hover:text-purple-600 transition-colors duration-200 ${isActive("/contact")
                   ? "text-purple-600 font-medium"
                   : ""
-              }`}
+                }`}
             >
               Contact
             </Link>
@@ -79,20 +85,25 @@ const Navbar = () => {
           </div>
 
           {/* Icons */}
-          <div className="flex items-center space-x-4">
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
+          <div className="flex items-center space-x-4"  >
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200  dark:bg-white text-black hover:hover:scale-112 rotate-0 transition-all">
               <User className="w-5 h-5 " />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 relative">
+            <button className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 relative dark:bg-white text-black hover:scale-112 rotate-0 transition-all" onClick={() => setOpen(true)}>
               <ShoppingCart className="w-5 h-5 " />
-              {cartCount > 0 && (
+              {/* {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
                   {cartCount}
+                </span>
+              )} */}
+              {totalQuantity > 0 && (
+                <span className="absolute -top-2 -right-2 text-xs bg-red-600 text-white rounded-full px-1.5">
+                  {totalQuantity}
                 </span>
               )}
             </button>
 
-              <ModeToggle/>
+            <ModeToggle />
 
 
             {/* Mobile menu button */}

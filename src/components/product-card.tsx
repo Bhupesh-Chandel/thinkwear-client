@@ -4,16 +4,46 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Heart } from "lucide-react"
+import { ShoppingCart} from "lucide-react"
 // // import Link from "next/link"
+import { useCart } from "../Context/cartContext";
+import { Link } from "react-router";
+// import { CartItem } from './cart-provider';
 
 interface Product {
-  _id: string
-  name: string
-  description: string
-  image: string
+  _id: string; // MongoDB ObjectId as string
+  id?: number; // Optional if using MongoDB _id
+  name: string;
+  description?: string;
+  image: string;
+
+  // Derived price (you can compute it from priceConfiguration)
+  price: number;
+  originalPrice?: number;
+
+  rating: number;
+  reviews: number;
+  badge?: string;
+
+  priceConfiguration?: {
+    Size?: {
+      priceType: string;
+      availableOptions: Record<string, number>; // e.g. { S: 300, M: 340 }
+    };
+    size?: {
+      priceType: string;
+      availableOptions: Record<string, number>; // e.g. { S: 300, M: 340 }
+    };
+  };
+  
+  //  quantity: number;
 
 
+  categoryId?: string;
+  attributes?: Array<any>;
+  isPublish?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface ProductCardProps {
@@ -79,18 +109,29 @@ interface ProductCardProps {
 //   )
 // }
 
-export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+// type CartItem = Product & {
+//   quantity: number;
+// };
+
+export function ProductCard({ product}: ProductCardProps) {
+  const { addToCart } = useCart();
+  const handleAdd = () => {
+    addToCart({
+      ...product,
+      quantity: 1, // always start with 1
+    });
+  };
   return (
-    <Card className="product-card group overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 bg-card ">
+    <Card className="product-card group overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 bg-card p-0 flex flex-col">
       {/* Fixed height image container */}
-      <div className="relative w-full h-64 overflow-hidden rounded-t-md">
-        <a href={`/products/${product._id}`}>
+      <div className="relative w-full h-52 overflow-hidden rounded-t-md">
+        <Link to={`/products/${product._id}`}>
           <img
             src={product.image || "/placeholder.svg"}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 block"
           />
-        </a>
+        </Link>
 
         {/* Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
@@ -103,7 +144,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         </div>
 
         {/* Wishlist button */}
-        <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        {/* <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <Button
             size="icon"
             variant="secondary"
@@ -111,14 +152,15 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           >
             <Heart className="h-4 w-4" />
           </Button>
-        </div>
+        </div> */}
 
         {/* Add to Cart button */}
         <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           <Button
             className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
             size="sm"
-            onClick={() => onAddToCart?.(product)}
+            // onClick={() => addToCart(product)}
+            onClick={handleAdd}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
             Add to Cart
@@ -127,20 +169,32 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
       </div>
 
       {/* Info Section */}
-      <CardContent className="p-4">
-        <div className="space-y-2">
-          <p className="text-sm text-muted-foreground">4335</p>
+      <CardContent className="p-4 flex-1 flex flex-col">
+        <div className="flex flex-col h-full">
           <a href={`/products/${product._id}`}>
             <h3 className="font-medium line-clamp-2 hover:text-primary transition-colors">
               {product.name}
             </h3>
           </a>
-          <div className="flex items-center gap-2">
-            <span className="font-semibold">${0}</span>
-            <span className="line-through text-sm text-muted-foreground">$200</span>
+
+          <div className="mt-auto pt-2">
+            {(() => {
+              const config = product.priceConfiguration;
+              if (!config || typeof config !== "object") return null;
+
+              const firstKey = Object.keys(config)[0];
+              const entry = (config as Record<string, { availableOptions: Record<string, number> }>)[firstKey];
+              const variants = entry?.availableOptions;
+              const firstPrice = variants ? Object.values(variants)[0] : null;
+
+              return firstPrice !== null ? (
+                <span className="font-semibold text-lg text-gray-900 dark:text-white">₹{firstPrice}</span>
+              ) : null;
+            })()}
           </div>
         </div>
       </CardContent>
+
     </Card>
   );
 }

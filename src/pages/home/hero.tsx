@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 // import { ChevronLeft, ChevronRight, Star, ShoppingBag } from "lucide-react";
+import {Link} from "react-router";
 
 function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -33,7 +34,7 @@ function Hero() {
       title: "Best Sellers",
       subtitle: "What everyone's talking about",
       image:
-        "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1200&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       cta: "View All",
       number: 2,
     },
@@ -74,12 +75,14 @@ function Hero() {
             >
               {heroSlides[currentSlide].subtitle}
             </p>
-            <button
+             <Link to={"/products"}>
+                 <button
               className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 animate-fade-in"
               style={{ animationDelay: "0.4s" }}
             >
               {heroSlides[currentSlide].cta}
             </button>
+             </Link>
           </div>
         </div>
 

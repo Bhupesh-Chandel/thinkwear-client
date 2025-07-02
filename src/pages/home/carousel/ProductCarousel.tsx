@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductCard } from './ProductCard';
 import type { Product } from './Product';
 import { useResponsiveCarousel } from './useResponsiveCarousel';
+import { Link } from 'react-router';
 
 interface ProductCarouselProps {
   products: Product[];
@@ -86,9 +87,9 @@ export const ProductCarousel: React.FC<ProductCarouselProps> = ({
                 width: `${itemWidth}%`
               }}
             >
-              <a href={`products/${product._id}`}>
+              <Link to={`products/${product._id}`}>
               <ProductCard key={product._id}  product={product} />
-              </a>
+              </Link>
             </div>
           ))}
         </div>

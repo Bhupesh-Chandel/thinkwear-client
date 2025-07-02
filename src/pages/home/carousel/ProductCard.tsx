@@ -215,8 +215,9 @@
 // };
 
 import React, { useState } from 'react';
-import {  ShoppingCart, Eye } from 'lucide-react';
+import { ShoppingCart, Eye } from 'lucide-react';
 import type { Product } from './Product';
+import { useCart } from "../../../Context/cartContext"
 
 interface ProductCardProps {
   product: Product;
@@ -224,6 +225,17 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({
+      ...product,
+      quantity: 1,
+    });
+  };
 
   // const discountPercentage = product.originalPrice
   //   ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -235,7 +247,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div
-      className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100"
+      className="group  rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -263,7 +275,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Eye className="w-4 h-4" />
             Quick View
           </button>
-          <button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium">
+          <button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium"  onClick={handleAddToCart}>
             <ShoppingCart className="w-4 h-4" />
             Add to Cart
           </button>
@@ -272,7 +284,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Product Details */}
       <div className="p-4">
-        <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-200">
+        <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-200 dark:text-white">
           {product.name}
         </h3>
 
@@ -289,8 +301,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* Price */}
-        <div className="flex items-center gap-2">
-          <span className="text-lg font-bold text-gray-900">₹{firstPrice}</span>
+        <div className="flex items-center gap-2 ">
+          <span className="text-lg font-bold text-gray-900 dark:text-white">₹{firstPrice}</span>
           {product.originalPrice && (
             <span className="text-sm text-gray-500 line-through">₹{product.originalPrice}</span>
           )}

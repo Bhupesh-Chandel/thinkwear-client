@@ -115,11 +115,11 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            ©️ 2024 ShopWear. All rights reserved.
+            ©️ 2024 ThinkWear. All rights reserved.
           </p>
 
           {/* Social Media */}
-          <div className="flex space-x-4">
+          {/* <div className="flex space-x-4">
             <a
               href="#"
               className="p-2 bg-gray-800 rounded-full hover:bg-purple-600 transition-colors duration-200"
@@ -144,7 +144,7 @@ const Footer = () => {
             >
               <Mail className="w-4 h-4" />
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

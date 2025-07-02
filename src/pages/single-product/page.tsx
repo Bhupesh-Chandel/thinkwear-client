@@ -1,56 +1,14 @@
-import { useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Heart, Share2, Minus, Plus, ShoppingCart } from "lucide-react";
+import { Star, Heart, Share2, ShoppingCart } from "lucide-react";
 import { useParams } from "react-router";
-
-// import { useCart } from "@/components/cart-provider";
 import { useQuery } from "@tanstack/react-query";
 import { getSingleProduct } from "@/http/api";
-import type { Product } from "@/types";
 import { Spinner } from "@/components/ui/spinner";
-
-// const product = {
-//   id: "1",
-//   name: "Premium Wireless Headphones",
-//   price: 199.99,
-//   originalPrice: 249.99,
-//   images: [
-//     "/placeholder.svg?height=600&width=600",
-//     "/placeholder.svg?height=600&width=600",
-//     "/placeholder.svg?height=600&width=600",
-//     "/placeholder.svg?height=600&width=600",
-//   ],
-//   category: "Electronics",
-//   description:
-//     "Experience premium sound quality with our latest wireless headphones. Featuring advanced noise cancellation, 30-hour battery life, and premium comfort for all-day wear.",
-//   features: [
-//     "Active Noise Cancellation",
-//     "30-hour battery life",
-//     "Premium comfort padding",
-//     "Bluetooth 5.0 connectivity",
-//     "Quick charge technology",
-//     "Built-in microphone",
-//   ],
-//   specifications: {
-//     "Driver Size": "40mm",
-//     "Frequency Response": "20Hz - 20kHz",
-//     Impedance: "32 ohms",
-//     Weight: "250g",
-//     Connectivity: "Bluetooth 5.0, 3.5mm jack",
-//     "Battery Life": "30 hours",
-//   },
-//   variants: {
-//     color: ["Black", "White", "Silver"],
-//     size: ["One Size"],
-//   },
-//   rating: 4.8,
-//   reviewCount: 124,
-//   isNew: true,
-//   isSale: true,
-// }
+import { useCart } from "../../Context/cartContext";
 
 const reviews = [
   {
@@ -58,8 +16,7 @@ const reviews = [
     name: "John Doe",
     rating: 5,
     date: "2024-01-15",
-    comment:
-      "Excellent sound quality and very comfortable to wear for long periods.",
+    comment: "Excellent",
     verified: true,
   },
   {
@@ -67,7 +24,7 @@ const reviews = [
     name: "Jane Smith",
     rating: 4,
     date: "2024-01-10",
-    comment: "Great headphones, but the case could be more compact.",
+    comment: "Great",
     verified: true,
   },
   {
@@ -75,253 +32,189 @@ const reviews = [
     name: "Mike Johnson",
     rating: 5,
     date: "2024-01-05",
-    comment:
-      "Best headphones I've ever owned. The noise cancellation is amazing!",
+    comment: "Value For Money",
     verified: true,
   },
 ];
 
-const relatedProducts = [
-  {
-    id: "2",
-    name: "Wireless Earbuds Pro",
-    price: 149.99,
-    image: "/placeholder.svg?height=300&width=300",
-    category: "Electronics",
-  },
-  {
-    id: "3",
-    name: "Bluetooth Speaker",
-    price: 89.99,
-    image: "/placeholder.svg?height=300&width=300",
-    category: "Electronics",
-  },
-  {
-    id: "4",
-    name: "Phone Stand",
-    price: 29.99,
-    image: "/placeholder.svg?height=300&width=300",
-    category: "Accessories",
-  },
-];
-
 export default function ProductPage() {
+  const { addToCart } = useCart();
   const params = useParams();
   const productId = params.id;
-  //   const [selectedImage, setSelectedImage] = useState(0)
-  const [selectedColor, setSelectedColor] = useState("M");
-  const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState(0);
+
+  const [selectedColor, setSelectedColor] = useState("");
+  const [quantity] = useState(1);
+  const [fixedPrice, setFixedPrice] = useState(0);
 
   const { data: productData, isLoading } = useQuery({
     queryKey: ["product", productId],
-    queryFn: () => {
-      return getSingleProduct(productId as string).then((res) => res.data);
-    },
+    queryFn: () => getSingleProduct(productId as string).then((res) => res.data),
   });
+
+  const defaultConfiguration = useMemo(() => {
+    if (!productData || !productData.priceConfiguration) return [];
+
+    const typedConfig = productData.priceConfiguration as Record<
+      string,
+      { availableOptions: Record<string, number> }
+    >;
+
+    return Object.entries(typedConfig).map(([key, value]) => ({
+      name: key,
+      variants: value.availableOptions,
+    }));
+  }, [productData]);
+
+  useEffect(() => {
+    if (!productData || defaultConfiguration.length === 0) return;
+
+    const firstVariantObject = defaultConfiguration[0].variants;
+    const firstEntry = Object.entries(firstVariantObject)[0];
+    if (firstEntry) {
+      const [firstKey, firstValue] = firstEntry;
+      setSelectedColor(firstKey);
+      setFixedPrice(firstValue as number);
+    }
+  }, [productData, defaultConfiguration]);
+
+  const handleAddToCart = () => {
+    if (!productData || !selectedColor || fixedPrice === 0) return;
+
+    addToCart({
+      ...productData,
+      selectedVariant: selectedColor,
+      price: fixedPrice,
+      quantity,
+    });
+  };
 
   if (isLoading) {
-    return <>
-    <div className="flex justify-center items-center min-h-[50vh]">
-      <Spinner className="h-10 w-10 text-black dark:text-white" />
-    </div>
-    </>;
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <Spinner className="h-10 w-10 text-black dark:text-white" />
+      </div>
+    );
   }
-
-  const defaultConfiguration = Object.entries(
-    (productData as Product).priceConfiguration
-  ).map(([key, value]) => {
-    return { name: key, variants: value.availableOptions };
-  });
-
-  console.log("df", defaultConfiguration);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid lg:grid-cols-2 gap-12 mb-16">
         {/* Product Images */}
-
         <div className="space-y-4">
           <div className="aspect-square relative overflow-hidden rounded-lg border">
             <img
               src={productData.image || "/placeholder.svg"}
-              //   src={product.images[selectedImage] || "/placeholder.svg"}
               alt={productData.name}
-              //   fill
-              className="object-cover"
+              className="object-cover w-full h-full"
             />
-            {true && (
-              <Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-                Sale {params.id}
-              </Badge>
-            )}
-            {true && (
-              <Badge className="absolute top-4 right-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-                New
-              </Badge>
-            )}
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {/* {product.images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`aspect-square relative overflow-hidden rounded-md border-2 ${
-                  selectedImage === index ? "border-primary" : "border-gray-200"
-                }`}
-              >
-                <img
-                  src={image || "/placeholder.svg"}
-                  alt={`${product.name} ${index + 1}`}
-                //   fill
-                  className="object-cover"
-                />
-              </button>
-            ))} */}
+            <Badge className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+              Sale
+            </Badge>
+            <Badge className="absolute top-4 right-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+              New
+            </Badge>
           </div>
         </div>
 
         {/* Product Details */}
         <div className="space-y-6">
           <div>
-            <p className="text-sm text-muted-foreground mb-2">gtrg</p>
             <h1 className="text-3xl font-bold mb-4">{productData.name}</h1>
 
-            {/* Rating */}
             <div className="flex items-center gap-2 mb-4">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-5 w-5 ${
-                      i < 5 ? "fill-primary text-primary" : "text-gray-300"
-                    }`}
+                    className={`h-5 w-5 ${i < 5 ? "fill-primary text-primary" : "text-gray-300"}`}
                   />
                 ))}
               </div>
-              <span className="text-sm text-muted-foreground">
-                5 (3 reviews)
-              </span>
+              <span className="text-sm text-muted-foreground">5 (3 reviews)</span>
             </div>
 
-            {/* Price */}
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold">
-                {price}
-              </span>
-              {/* 1003 */}
+              <span className="text-3xl font-bold">₹{fixedPrice}</span>
             </div>
 
-            <p className="text-muted-foreground mb-6">
-              {productData.description}
-            </p>
+            <p className="text-muted-foreground mb-6">{productData.description}</p>
           </div>
 
           {/* Variants */}
-          {defaultConfiguration.map((priceConfiguration) => {
-            return (
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    {priceConfiguration.name}
-                  </label>
-                  <div className="flex gap-2">
-                    {Object.keys(priceConfiguration.variants).map((color:any) => (
-                      <Button
-                        key={color}
-                        variant={
-                          selectedColor === color ? "default" : "outline"
-                        }
-                        size="sm"
-                        onClick={() => {
-                            setPrice(priceConfiguration.variants[color] as any)
-                            setSelectedColor(color)
-                        }}
-                        className={
-                          selectedColor === color
-                            ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0"
-                            : ""
-                        }
-                      >
-                        {color}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Quantity */}
-                <div>
-                  <label className="text-sm font-medium mb-2 block">
-                    Quantity
-                  </label>
-                  <div className="flex items-center gap-2">
+          {defaultConfiguration.map((priceConfiguration) => (
+            <div className="space-y-4" key={priceConfiguration.name}>
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  {priceConfiguration.name}
+                </label>
+                <div className="flex gap-2">
+                  {Object.keys(priceConfiguration.variants).map((color: any) => (
                     <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      key={color}
+                      variant={selectedColor === color ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedColor(color)}
+                      className={
+                        selectedColor === color
+                          ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0"
+                          : ""
+                      }
                     >
-                      <Minus className="h-4 w-4" />
+                      {color}
                     </Button>
-                    <span className="w-12 text-center">{quantity}</span>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setQuantity(quantity + 1)}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  ))}
                 </div>
               </div>
-            );
-          })}
+
+              {/* Quantity */}
+              {/* <div>
+                <label className="text-sm font-medium mb-2 block">Quantity</label>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span className="w-12 text-center">{quantity}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setQuantity(quantity + 1)}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div> */}
+            </div>
+          ))}
 
           {/* Actions */}
-          <div className="space-y-4">
+          <div className="space-y-16 mt-16">
             <Button
               size="lg"
               className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0"
-              onClick={() => {}}
+              onClick={handleAddToCart}
             >
               <ShoppingCart className="h-5 w-5 mr-2" />
-              Add to Cart - 2100
+              Add to Cart
             </Button>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="lg"
-                className="flex-1 bg-transparent"
-              >
+              <Button variant="outline" size="lg" className="flex-1 bg-transparent">
                 <Heart className="h-5 w-5 mr-2" />
                 Add to Wishlist
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="flex-1 bg-transparent"
-              >
+              <Button variant="outline" size="lg" className="flex-1 bg-transparent">
                 <Share2 className="h-5 w-5 mr-2" />
                 Share
               </Button>
             </div>
           </div>
-
-          {/* Features */}
-          {/* <div>
-            <h3 className="font-semibold mb-3">Key Features</h3>
-            <ul className="space-y-2">
-              {product.features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-2 text-sm">
-                  <div className="w-1.5 h-1.5 bg-primary rounded-full" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div> */}
         </div>
       </div>
 
-      {/* Product Information Tabs */}
+      {/* Tabs */}
       <div className="mb-16">
         <Tabs defaultValue="description" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
@@ -332,19 +225,7 @@ export default function ProductPage() {
           <TabsContent value="description" className="mt-6">
             <Card>
               <CardContent className="p-6">
-                <p className="text-muted-foreground leading-relaxed">
-                  {productData.description}
-                </p>
-                <div className="mt-6">
-                  {/* <h4 className="font-semibold mb-3">What's in the box:</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>• Premium Wireless Headphones</li>
-                    <li>• USB-C Charging Cable</li>
-                    <li>• 3.5mm Audio Cable</li>
-                    <li>• Carrying Case</li>
-                    <li>• Quick Start Guide</li>
-                  </ul> */}
-                </div>
+                <p className="text-muted-foreground leading-relaxed">{productData.description}</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -369,17 +250,14 @@ export default function ProductPage() {
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`h-4 w-4 ${
-                                  i < review.rating
-                                    ? "fill-primary text-primary"
-                                    : "text-gray-300"
-                                }`}
+                                className={`h-4 w-4 ${i < review.rating
+                                  ? "fill-primary text-primary"
+                                  : "text-gray-300"
+                                  }`}
                               />
                             ))}
                           </div>
-                          <span className="text-sm text-muted-foreground">
-                            {review.date}
-                          </span>
+                          <span className="text-sm text-muted-foreground">{review.date}</span>
                         </div>
                       </div>
                     </div>
@@ -390,38 +268,6 @@ export default function ProductPage() {
             </div>
           </TabsContent>
         </Tabs>
-      </div>
-
-      {/* Related Products */}
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Related Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {relatedProducts.map((relatedProduct) => (
-            <Card key={relatedProduct.id}>
-              <CardContent className="p-6">
-                <div className="aspect-square relative overflow-hidden rounded-lg border">
-                  <img
-                    src={relatedProduct.image || "/placeholder.svg"}
-                    alt={relatedProduct.name}
-                    // fill
-                    className="object-cover"
-                  />
-                </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  {relatedProduct.category}
-                </p>
-                <h3 className="text-lg font-bold mt-2">
-                  {relatedProduct.name}
-                </h3>
-                <div className="flex items-center gap-3 mt-2">
-                  <span className="text-2xl font-bold">
-                    ${relatedProduct.price}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
       </div>
     </div>
   );

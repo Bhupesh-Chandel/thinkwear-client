@@ -1,4 +1,5 @@
 import {ShoppingBag } from "lucide-react"
+import { Link } from "react-router"
 
 function NewsLetter() {
   return (
@@ -10,7 +11,7 @@ function NewsLetter() {
           <p className="text-xl mb-8 opacity-90">
             Be the first to know about new collections, exclusive deals, and fashion trends.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
@@ -19,7 +20,12 @@ function NewsLetter() {
             <button className="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-200">
               Subscribe
             </button>
-          </div>
+          </div> */}
+                  <Link to={"/products"}>
+               <button className="bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105">
+              Shop Now
+              </button>
+           </Link>
         </div>
       </section>
 
