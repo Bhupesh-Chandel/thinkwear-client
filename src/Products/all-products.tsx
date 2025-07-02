@@ -1,6 +1,6 @@
 "use client";
 
-import {useMemo, useRef, useState } from "react";
+import {useLayoutEffect , useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { debounce } from "lodash";
@@ -74,13 +74,13 @@ export default function ProductsPage() {
 
 
 
-  // useLayoutEffect(() => {
-  //   // console.log("ref working" , ref.current);
-  //      if(inputRef.current){
-  //      inputRef.current?.focus();
+  useLayoutEffect(() => {
+    // console.log("ref working" , ref.current);
+       if(inputRef.current){
+       inputRef.current?.focus();
 
-  //      }
-  // }, [queryParams.q]);
+       }
+  }, [queryParams.q]);
 
 
   const { data: categoriesData } = useQuery({
