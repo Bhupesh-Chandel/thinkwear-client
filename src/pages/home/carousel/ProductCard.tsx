@@ -214,6 +214,104 @@
 //   );
 // };
 
+// import React, { useState } from 'react';
+// import { ShoppingCart, Eye } from 'lucide-react';
+// import type { Product } from './Product';
+// import { useCart } from "../../../Context/cartContext"
+
+// interface ProductCardProps {
+//   product: Product;
+// }
+
+// export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+//   const [isHovered, setIsHovered] = useState(false);
+
+//   const { addToCart } = useCart();
+
+//   const handleAddToCart = (e: React.MouseEvent) => {
+//     e.preventDefault();
+//     e.stopPropagation();
+//     addToCart({
+//       ...product,
+//       quantity: 1,
+//     });
+//   };
+
+//   // const discountPercentage = product.originalPrice
+//   //   ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+//   //   : 0;
+
+//   const [, firstPrice] = Object.entries(
+//     product.priceConfiguration?.size?.availableOptions || {}
+//   )[0] || [];
+
+//   return (
+//     <div
+//       className="group  rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border"
+//       onMouseEnter={() => setIsHovered(true)}
+//       onMouseLeave={() => setIsHovered(false)}
+//     >
+//       {/* Image with aspect ratio */}
+//       <div className="relative aspect-square overflow-hidden bg-gray-50">
+//         <img
+//           src={product.image}
+//           alt={product.name}
+//           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+//         />
+
+//         {/* Discount Badge
+//         {discountPercentage > 0 && (
+//           <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+//             -{discountPercentage}%
+//           </div>
+//         )} */}
+
+//         {/* Hover Buttons */}
+//         <div
+//           className={`absolute inset-x-3 bottom-3 flex gap-2 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+//             }`}
+//         >
+//           <button className="flex-1 bg-white/90 backdrop-blur-sm text-gray-800 py-2 px-3 rounded-lg hover:bg-white transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium">
+//             <Eye className="w-4 h-4" />
+//             Quick View
+//           </button>
+//           <button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium"  onClick={handleAddToCart}>
+//             <ShoppingCart className="w-4 h-4" />
+//             Add to Cart
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Product Details */}
+//       <div className="p-4">
+//         <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-200 dark:text-white">
+//           {product.name}
+//         </h3>
+
+//         {/* Rating */}
+//         <div className="flex items-center gap-2 mb-2">
+//           <div className="flex text-yellow-400">
+//             {[...Array(5)].map((_, i) => (
+//               <span key={i} className={i < Math.floor(4) ? 'text-yellow-400' : 'text-gray-300'}>
+//                 ★
+//               </span>
+//             ))}
+//           </div>
+//           <span className="text-sm text-gray-500">(123)</span>
+//         </div>
+
+//         {/* Price */}
+//         <div className="flex items-center gap-2 ">
+//           <span className="text-lg font-bold text-gray-900 dark:text-white">₹{firstPrice}</span>
+//           {product.originalPrice && (
+//             <span className="text-sm text-gray-500 line-through">₹{product.originalPrice}</span>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
 import React, { useState } from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
 import type { Product } from './Product';
@@ -237,17 +335,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     });
   };
 
-  // const discountPercentage = product.originalPrice
-  //   ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-  //   : 0;
-
   const [, firstPrice] = Object.entries(
     product.priceConfiguration?.size?.availableOptions || {}
   )[0] || [];
 
   return (
     <div
-      className="group  rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border"
+      className="group rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border h-full flex flex-col justify-between"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -259,26 +353,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
 
-        {/* Discount Badge
-        {discountPercentage > 0 && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-            -{discountPercentage}%
-          </div>
-        )} */}
-
         {/* Hover Buttons */}
         <div
-          className={`absolute inset-x-3 bottom-3 flex gap-2 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+          className={`absolute inset-x-3 bottom-3 transition-all duration-300 ${
+            isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}
         >
-          <button className="flex-1 bg-white/90 backdrop-blur-sm text-gray-800 py-2 px-3 rounded-lg hover:bg-white transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium">
-            <Eye className="w-4 h-4" />
-            Quick View
-          </button>
-          <button className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium"  onClick={handleAddToCart}>
-            <ShoppingCart className="w-4 h-4" />
-            Add to Cart
-          </button>
+          {/* Large screens: show both buttons */}
+          <div className="hidden md:flex gap-2">
+            <button className="flex-1 bg-white/90 backdrop-blur-sm text-gray-800 py-2 px-3 rounded-lg hover:bg-white transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium">
+              <Eye className="w-4 h-4" />
+              Quick View
+            </button>
+            <button
+              className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium"
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart className="w-4 h-4" />
+              Add to Cart
+            </button>
+          </div>
+
+          {/* Small screens: show only Add to Cart */}
+          <div className="flex md:hidden">
+            <button
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 flex items-center justify-center gap-2 text-sm font-medium"
+              onClick={handleAddToCart}
+            >
+              <ShoppingCart className="w-4 h-4" />
+              Add to Cart
+            </button>
+          </div>
         </div>
       </div>
 
@@ -301,7 +406,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* Price */}
-        <div className="flex items-center gap-2 ">
+        <div className="flex items-center gap-2">
           <span className="text-lg font-bold text-gray-900 dark:text-white">₹{firstPrice}</span>
           {product.originalPrice && (
             <span className="text-sm text-gray-500 line-through">₹{product.originalPrice}</span>
@@ -311,4 +416,3 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     </div>
   );
 };
-
